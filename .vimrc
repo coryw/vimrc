@@ -148,7 +148,7 @@ map <C-l> :call WinMove('l')<cr>
 " move to the window in the direction shown, or create a new window
 function! WinMove(key)
 	let t:curwin = winnr()
-	wincmd ".a:key
+	exec "wincmd ".a:key
 	if (t:curwin == winnr())
 		if (match(a:key,'[jk]'))
 			wincmd v
