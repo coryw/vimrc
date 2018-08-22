@@ -8,6 +8,8 @@ set laststatus=2
 set path+=**
 set wildmenu
 
+" Use mouse scrolling but press : to scroll terminal
+set mouse=nvi
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -25,6 +27,17 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'benmills/vimux'
 Plugin 'tpope/vim-fugitive' " the ultimate git helper
 Plugin 'tpope/vim-commentary' " comment/uncomment lines with gcc or gc in visual mode
+Plugin 'vim-vdebug/vdebug' " Debugger
+Plugin 'tpope/vim-surround' " Surround with cs + char to replace + char to replace with
+Plugin 'nathanaelkane/vim-indent-guides' " Indent guides
+Plugin 'luochen1990/rainbow' " Bracket pair colorizer
+Plugin 'vim-syntastic/syntastic' " PHP syntax checker
+Plugin 'easymotion/vim-easymotion' " Sweet motions
+Plugin 'jistr/vim-nerdtree-tabs' " Keep NERDTree open across all tabs
+Plugin 'tpope/vim-repeat' " Repeat plugin commands with .
+Plugin 'jeetsukumaran/vim-buffergator' " Manage buffers
+Plugin 'majutsushi/tagbar' " Show tags in sidebar
+Plugin 'qpkorr/vim-bufkill' " Close buffers; not windows
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
@@ -48,9 +61,13 @@ Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-projectionist'
 Plugin 'noahfrederick/vim-composer'
 Plugin 'noahfrederick/vim-laravel'
+Plugin 'jwalton512/vim-blade'
 
 " More themes
 Plugin 'flazz/vim-colorschemes'
+
+" Emmet
+Plugin 'mattn/emmet-vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -65,7 +82,8 @@ set backspace=indent,eol,start
 let mapleader = ','
 
 " Tab control
-set noexpandtab " tabs ftw
+"set noexpandtab " tabs ftw
+set expandtab " Expand tabs to play nicely with other editors
 set smarttab " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
 set tabstop=4 " the visible width of tabs
 set softtabstop=4 " edit as if the tabs are 4 characters wide
@@ -78,10 +96,22 @@ set clipboard=unnamed
 set ttyfast
 
 " code folding settings
-set foldmethod=syntax " fold based on indent
+"set foldmethod=syntax " fold based on indent
+set foldmethod=indent
 set foldnestmax=10 " deepest fold is 10 levels
 set nofoldenable " don't fold by default
 set foldlevel=1
+
+" Needed for buffers
+set hidden
+
+" Indent 
+let g:indent_guides_guide_size = 1
+let g:indent_guides_color_change_percent = 3
+let g:indent_guides_enable_on_vim_startup = 1
+
+" Bracket pair colorizer
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => User Interface
@@ -112,20 +142,78 @@ set background=dark
 colorscheme Tomorrow-Night
 " colorscheme quantum
 
-set number
+" set relativenumber
+set number " Show line numbers
+
+set nostartofline " Stop certain movements from going to the first character
+
+" Quickly time out on keycodes, but never time out on mappings
+set notimeout ttimeout ttimeoutlen=200
+
+" Display the cursor position on the last line of the screen or in the status
+" line of a window
+set ruler
+
+set shell=bash " enable bash aliases
 
 set autoindent " automatically set indent of new line
 set smartindent
 
-set laststatus=2 " show the satus line all the time
+set laststatus=2 " show the status line all the time
+
+" Instead of failing a command because of unsaved changes, instead raise a
+" dialogue asking if you wish to save changed files.
+set confirm
+
+" Show partial commands in the last line of the screen
+set showcmd
+
+" if opening a file from :ls, :buffers, :files, etc. jump to open version
+" of the file, if one exists
+set switchbuf=useopen
+
+" spell check comments
+set nospell
+
+" Set the command window height to 2 lines, to avoid many cases of having to
+" press <Enter> to continue"
+set cmdheight=2
+
+" Use visual bell instead of beeping when doing something wrong
+set visualbell
+
+" Better command-line completion
+set wildmenu
+set wildmode=longest,list,full
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+if exists('$TMUX')  " Support resizing in tmux
+      set ttymouse=xterm2
+endif
+
+" green/red diffs
+highlight diffAdded guifg=#00bf00
+highlight diffRemoved guifg=#bf0000
+
+" Current line customization
+" high light current line in insert mode
+" Enable CursorLine
+set cursorline
+autocmd InsertEnter * highlight  CursorLine ctermbg=236 ctermfg=None
+autocmd InsertLeave * highlight  CursorLine ctermbg=235 ctermfg=None
+
+" Always show tabline
+set showtabline=2
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <leader>ev :e! ~/.vimrc<cr> " edit ~/.vimrc
-
-map <leader>wc :wincmd q<cr>
+" map <leader>ev :tabedit ~/.vimrc<cr> " edit ~/.vimrc
+map <leader>ev :vsplit ~/.vimrc<cr>
 
 " moving up and down work as you would expect
 nnoremap <silent> j gj
@@ -162,7 +250,47 @@ endfunction
 " My Shorcuts
 "
 nmap <silent> <leader>/ :Commentary<cr>
-nmap <silent> <leader>s :w<cr>
+nmap <silent> <leader>q :q<cr>
+" nmap <silent> <leader>d :bd<cr>
+nmap <silent> <leader>d :BD<cr>
+nmap <silent> <leader>m :tabe <cr>
+nmap <C-b> :BuffergatorToggle<cr>
+nmap <C-t> :BuffergatorTabsToggle<cr>
+
+nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
+
+nmap <silent> <l;ader>h :noh<cr> " Turn off search highlights
+nmap <C-_> :noh<cr> " Turn off search highlights
+nmap <silent> <leader>w :w<cr>
+nmap <silent> <leader>rv :source ~/.vimrc<cr> " Refresh vimrc
+" nmap <silent> <leader>s :tabn<cr>
+" nmap <silent> <leader>a :tabp<cr>
+nmap <silent> <leader>s :bn<cr>
+nmap <silent> <leader>a :bp<cr>
+nmap <Tab> :bn<cr>
+nmap <S-Tab> :bp<cr>
+nmap <silent> <leader>a :bp<cr>
+nmap <silent> <leader>l :set relativenumber!<cr>cr " Toggle line number setting
+nnoremap <silent> <leader>ed :VdebugEval<SPACE>
+nnoremap <silent> <leader>gs :Gstatus<cr>
+nnoremap <silent> <leader>gd :Gvdiff<cr>
+nnoremap <silent> <leader>gb :Gblame<cr>
+nnoremap <silent> <leader>p :<esc>oeval(\Psy\sh());<esc>
+nnoremap <silent> <leader>- :exe "resize" . (winheight(0) - 5)<cr>
+nnoremap <silent> <leader>= :exe "resize" . (winheight(0) + 5)<cr>
+nnoremap <C-Down> :exe "resize" . (winheight(0) - 5)<cr>
+nnoremap <C-Up> :exe "resize" . (winheight(0) + 5)<cr>
+nnoremap <C-Left> :exe "resize" . (winwidth(0) - 5)<cr>
+nnoremap <C-Right> :exe "resize" . (winwidth(0) + 5)<cr>
+inoremap jj <ESC>
+inoremap kk <ESC>:w<cr><ESC>
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" Open new split panes to right and bottom
+set splitbelow
+set splitright
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  => Plugin settings
@@ -201,5 +329,82 @@ let g:ctrlp_custom_ignore = {
 " search the nearest ancestor that
 let g:ctrlp_working_path_mode = 2
 
+" The Silver Searcher
+if executable('ag')
+   " Use ag over grep
+    set grepprg=ag\ --nogroup\ --nocolor
 
-set rtp+=/usr/local/lib/python3/dist-packages/powerline/bindings/vim
+	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    "let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+	" ag is fast enough that CtrlP doesn't need to cache
+     "let g:ctrlp_use_caching = 0
+endif
+
+" bind \ (backward slash) to grep shortcut
+silent! command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
+
+" Bracket pair colorizer
+let g:rainbow_conf = {
+\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\   'operators': '_,_',
+\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\   'separately': {
+\       '*': {},
+\       'tex': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\       },
+\       'lisp': {
+\           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+\       },
+\       'vim': {
+\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+\       },
+\       'html': {
+\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+\       },
+\       'css': 0,
+\   }
+\}
+
+" PHP linter (vim-phpqa)
+" Don't run messdetector on save (default = 1):tab
+" let g:phpqa_messdetector_autorun = 0
+" " Don't run codesniffer on save (default = 1)
+" let g:phpqa_codesniffer_autorun = 0
+" " Show code coverage on load (default = 0)
+" let g:phpqa_codecoverage_autorun = 1
+" Stop the location list opening automatically
+" let g:phpqa_open_loc = 0
+" silent! unmap <leader>qa
+" silent! unmap <leader>qc
+" Map the keys to garbage mappings to prevent qc and qa bindings
+" nmap <unique> <Leader>66  <Plug>QAToolsToggle
+" nmap <unique> <Leader>67  <Plug>CodeCoverageToggle
+
+" Vim-syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_quiet_messages = { "type": "style" }
+
+" Vdebug
+if !exists('g:vdebug_options')
+        let g:vdebug_options = {}
+endif
+" Don't break on first line with Vdebuv
+" let g:vdebug_options_break_on_open = 0
+let g:vdebug_options.break_on_open = 0
+" Start listening immediately after debugging session is finished (pressed F6
+" or Ctrl C to stop)
+let g:vdebug_options.watch_window_style = 'compact'
+let g:vdebug_options.continuous_mode = 1
+
+
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
