@@ -38,6 +38,7 @@ Plugin 'tpope/vim-repeat' " Repeat plugin commands with .
 Plugin 'jeetsukumaran/vim-buffergator' " Manage buffers
 Plugin 'majutsushi/tagbar' " Show tags in sidebar
 Plugin 'qpkorr/vim-bufkill' " Close buffers; not windows
+Plugin 'tpope/vim-unimpaired' " [] shortcuts
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
@@ -250,26 +251,29 @@ endfunction
 " My Shorcuts
 "
 nmap <silent> <leader>/ :Commentary<cr>
-nmap <silent> <leader>q :q<cr>
+" nmap <silent> <leader>q :q<cr>
+nmap <silent> <leader>q :close<cr>
 " nmap <silent> <leader>d :bd<cr>
 nmap <silent> <leader>d :BD<cr>
 nmap <silent> <leader>m :tabe <cr>
 nmap <C-b> :BuffergatorToggle<cr>
-nmap <C-t> :BuffergatorTabsToggle<cr>
+" nmap <C-t> :BuffergatorTabsToggle<cr>
 
 nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
+"nnoremap <silent> <Leader>b :TagbarToggle<CR>
+nmap <C-t> :TagbarToggle<cr>
 
-nmap <silent> <l;ader>h :noh<cr> " Turn off search highlights
-nmap <C-_> :noh<cr> " Turn off search highlights
+nmap <silent> <l;ader>h :set noh<cr> " Turn off search highlights
+nmap <C-_> :set hlsearch!<cr> " Toggle search highlighting
 nmap <silent> <leader>w :w<cr>
 nmap <silent> <leader>rv :source ~/.vimrc<cr> " Refresh vimrc
 " nmap <silent> <leader>s :tabn<cr>
 " nmap <silent> <leader>a :tabp<cr>
 nmap <silent> <leader>s :bn<cr>
 nmap <silent> <leader>a :bp<cr>
-nmap <Tab> :bn<cr>
-nmap <S-Tab> :bp<cr>
+" Don't use - breaks Ctrl+I
+" nmap <Tab> :tabn<cr>
+" nmap <S-Tab> :tabp<cr>
 nmap <silent> <leader>a :bp<cr>
 nmap <silent> <leader>l :set relativenumber!<cr>cr " Toggle line number setting
 nnoremap <silent> <leader>ed :VdebugEval<SPACE>
@@ -405,6 +409,8 @@ let g:vdebug_options.break_on_open = 0
 " or Ctrl C to stop)
 let g:vdebug_options.watch_window_style = 'compact'
 let g:vdebug_options.continuous_mode = 1
+
+" set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 
 set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
