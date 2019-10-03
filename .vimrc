@@ -40,6 +40,11 @@ Plugin 'jeetsukumaran/vim-buffergator' " Manage buffers
 Plugin 'majutsushi/tagbar' " Show tags in sidebar
 Plugin 'qpkorr/vim-bufkill' " Close buffers; not windows
 Plugin 'tpope/vim-unimpaired' " [] shortcuts
+Plugin 'junegunn/gv.vim' " Commit browser
+    " Use :GV to show commits
+    " Use :GV! to show commits for current file
+    " Use :GV? to fill location list with revisions of current file
+    " Use :GV or :GV? in visual mode to show changes to selected lines
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
@@ -266,6 +271,9 @@ nnoremap <leader>. :CtrlPTag<cr>
 "nnoremap <silent> <Leader>b :TagbarToggle<CR>
 nmap <C-t> :TagbarToggle<cr>
 
+nmap [og :GitGutterLineHighlightsEnable<cr>
+nmap ]og :GitGutterLineHighlightsDisable<cr>
+
 nmap <silent> <l;ader>h :set noh<cr> " Turn off search highlights
 nmap <C-_> :set hlsearch!<cr> " Toggle search highlighting
 nmap <silent> <leader>w :w<cr>
@@ -282,7 +290,13 @@ nmap <silent> <leader>l :set relativenumber!<cr>cr " Toggle line number setting
 nnoremap <silent> <leader>ed :VdebugEval<SPACE>
 nnoremap <silent> <leader>gs :Gstatus<cr>
 nnoremap <silent> <leader>gd :Gvdiff<cr>
-nnoremap <silent> <leader>gb :Gblame<cr>
+nnoremap <silent> <leader>gv :Gsdiff<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gl :Gbrowse<cr>
+nnoremap <leader>gc :GV<cr>
+nnoremap <leader>cl :GV<cr>
+nnoremap <leader>cf :GV!<cr>
+nnoremap <leader>cr :GV?<cr>
 nnoremap <silent> <leader>p :<esc>oeval(\Psy\sh());<esc>
 nnoremap <silent> <leader>- :exe "resize" . (winheight(0) - 5)<cr>
 nnoremap <silent> <leader>= :exe "resize" . (winheight(0) + 5)<cr>
@@ -306,6 +320,18 @@ set splitright
 " Fugitive GitLab plugin
 " let g:fugitive_gitlab_domains = ['http://example.com']
 " let g:gitlab_api_keys = {'example.com': 'd09x-dk39d874hdfkd02'}
+
+" fix Glog not displaying in quickfix window:
+" https://github.com/tpope/vim-fugitive/issues/214
+autocmd QuickFixCmdPost *grep* cwindow
+
+highlight GitGutterAdd ctermfg=2
+highlight GitGutterChange ctermfg=3
+highlight GitGutterDelete ctermfg=1
+highlight GitGutterChangeDelete ctermfg=4
+
+let g:gitgutter_highlight_lines = 1
+let g:gitgutter_highlight_liners = 1
 
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=0
