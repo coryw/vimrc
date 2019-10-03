@@ -26,6 +26,7 @@ Plugin 'scrooloose/nerdtree' " file drawer, open with :NERDTreeToggle
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'benmills/vimux'
 Plugin 'tpope/vim-fugitive' " the ultimate git helper
+Plugin 'shumphrey/fugitive-gitlab.vim' " GitLab plugin for fugitive
 Plugin 'tpope/vim-commentary' " comment/uncomment lines with gcc or gc in visual mode
 Plugin 'vim-vdebug/vdebug' " Debugger
 Plugin 'tpope/vim-surround' " Surround with cs + char to replace + char to replace with
@@ -299,6 +300,10 @@ set splitright
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Fugitive GitLab plugin
+" let g:fugitive_gitlab_domains = ['http://example.com']
+" let g:gitlab_api_keys = {'example.com': 'd09x-dk39d874hdfkd02'}
 
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=0
