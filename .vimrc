@@ -99,10 +99,12 @@ set ttyfast
 
 " code folding settings
 "set foldmethod=syntax " fold based on indent
-set foldmethod=indent
+set foldmethod=marker
 set foldnestmax=10 " deepest fold is 10 levels
 set nofoldenable " don't fold by default
 set foldlevel=1
+" map space to toggle folds
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 
 " Needed for buffers
 set hidden
