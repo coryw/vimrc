@@ -21,7 +21,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " utilities
-Plugin 'kien/ctrlp.vim' " fuzzy find files
+Plugin 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plugin 'scrooloose/nerdtree' " file drawer, open with :NERDTreeToggle
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'benmills/vimux'
