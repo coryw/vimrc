@@ -150,8 +150,9 @@ set background=dark
 " colorscheme gruvbox
 colorscheme Tomorrow-Night
 " colorscheme quantum
+set updatetime=100
 
-" set relativenumber
+set relativenumber
 set number " Show line numbers
 
 set nostartofline " Stop certain movements from going to the first character
@@ -210,8 +211,9 @@ highlight diffRemoved guifg=#bf0000
 " high light current line in insert mode
 " Enable CursorLine
 set cursorline
-autocmd InsertEnter * highlight  CursorLine ctermbg=236 ctermfg=None
-autocmd InsertLeave * highlight  CursorLine ctermbg=235 ctermfg=None
+" commented out 2019-06-19 to try to keep cursorline from disappearing
+" autocmd InsertEnter * highlight  CursorLine ctermbg=236 ctermfg=None
+" autocmd InsertLeave * highlight  CursorLine ctermbg=235 ctermfg=None
 
 " Always show tabline
 set showtabline=2
@@ -231,6 +233,11 @@ nnoremap <silent> k gk
 " helpers for dealing with other people's code
 nmap \t :set ts=4 sts=4 sw=4 noet<cr>
 nmap \s :set ts=4 sts=4 sw=4 et<cr>
+
+nnoremap <tab> %
+vnoremap <tab> %
+
+nnoremap ; :
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
