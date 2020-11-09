@@ -45,6 +45,7 @@ Plugin 'junegunn/gv.vim' " Commit browser
     " Use :GV! to show commits for current file
     " Use :GV? to fill location list with revisions of current file
     " Use :GV or :GV? in visual mode to show changes to selected lines
+Plugin 'mbbill/undotree' " Undo visualizer
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
@@ -121,6 +122,11 @@ let g:indent_guides_enable_on_vim_startup = 1
 
 " Bracket pair colorizer
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+
+" Keep A LOT of undos
+set undodir=~/.vim/undofiles
+set undofile
+set undolevels=10000
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => User Interface
@@ -280,6 +286,8 @@ nmap <C-b> :BuffergatorToggle<cr>
 nnoremap <leader>. :CtrlPTag<cr>
 "nnoremap <silent> <Leader>b :TagbarToggle<CR>
 nmap <C-t> :TagbarToggle<cr>
+
+nmap <silent> <leader>z :UndotreeToggle<cr>
 
 nmap [og :GitGutterLineHighlightsEnable<cr>
 nmap ]og :GitGutterLineHighlightsDisable<cr>
@@ -452,6 +460,11 @@ let g:vdebug_options.break_on_open = 0
 " or Ctrl C to stop)
 let g:vdebug_options.watch_window_style = 'compact'
 let g:vdebug_options.continuous_mode = 1
+
+" UndoTree
+if !exists('g:undotree_WindowLayout')
+    let g:undotree_WindowLayout = 2
+endif
 
 " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
