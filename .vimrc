@@ -239,6 +239,9 @@ vnoremap <tab> %
 
 nnoremap ; :
 
+" Map autocomplete to Ctrl + Space
+inoremap <Nul> <C-n>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
