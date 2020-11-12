@@ -21,7 +21,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " utilities
-Plugin 'ctrlpvim/ctrlp.vim' " fuzzy find files
+Plugin 'junegunn/fzf' " better fuzzy-finder
+Plugin 'junegunn/fzf.vim' " better fuzzy-finder
 Plugin 'scrooloose/nerdtree' " file drawer, open with :NERDTreeToggle
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'benmills/vimux'
@@ -372,19 +373,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " map fuzzyfinder (CtrlP) plugin
 " nmap <silent> <leader>t :CtrlP<cr>
 nmap <silent> <leader>r :CtrlPBuffer<cr>
-map <C-p> :CtrlP <CR>
-let g:ctrlp_map='<leader>t'
-let g:ctrlp_dotfiles=1
-let g:ctrlp_working_path_mode = 'ra'
-
-" CtrlP ignore patterns
-let g:ctrlp_custom_ignore = {
-	\ 'dir': '\.git$\|node_modules$\|\.hg$\|\.svn$',
-	\ 'file': '\.exe$\|\.so$'
-	\ }
-
-" search the nearest ancestor that
-let g:ctrlp_working_path_mode = 2
+map <C-p> :FZF<CR>
 
 " The Silver Searcher
 if executable('ag')
