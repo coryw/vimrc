@@ -47,6 +47,7 @@ Plugin 'junegunn/gv.vim' " Commit browser
     " Use :GV? to fill location list with revisions of current file
     " Use :GV or :GV? in visual mode to show changes to selected lines
 Plugin 'mbbill/undotree' " Undo visualizer
+Plugin 'posva/vim-vue' " Vue syntax highlighting
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
@@ -460,7 +461,8 @@ endif
 " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+" Allow gf (go-to file) command to find vue, js, scss files
+set suffixesadd=.js,.vue,.scss
 
 " Check for powerline with python support
 if !empty(glob("/usr/lib/python3/dist-packages/powerline/bindings/vim"))
