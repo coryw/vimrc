@@ -53,8 +53,10 @@ Plugin 'airblade/vim-gitgutter'
 " Git actions plugin
 Plugin 'jreybert/vimagit' 
 
-" Powerline
-Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Load standard powerline bundle if python3 version is not installed
+if empty(glob("/usr/lib/python3/dist-packages/powerline/bindings/vim"))
+    Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+endif
 
 " colorschemes
 Plugin 'chriskempson/base16-vim'
@@ -470,3 +472,12 @@ endif
 
 
 set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+
+" Check for powerline with python support
+if !empty(glob("/usr/lib/python3/dist-packages/powerline/bindings/vim"))
+    set rtp+=/usr/lib/python3/dist-packages/powerline/bindings/vim
+else 
+    if !empty(glob("~/.vim/bundle/powerline/powerline/bindings/vim"))
+        set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+    endif
+endif
