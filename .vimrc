@@ -441,6 +441,8 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_quiet_messages = { "type": "style" }
 
+highlight Comment cterm=italic gui=italic
+
 " Vdebug
 if !exists('g:vdebug_options')
         let g:vdebug_options = {}
