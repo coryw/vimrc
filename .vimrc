@@ -339,9 +339,10 @@ set splitright
 "  => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Fugitive GitLab plugin
-" let g:fugitive_gitlab_domains = ['http://example.com']
-" let g:gitlab_api_keys = {'example.com': 'd09x-dk39d874hdfkd02'}
+" Keep private settings separate
+if !empty(glob("~/.vimrc_local"))
+    source ~/.vimrc_local
+endif
 
 " fix Glog not displaying in quickfix window:
 " https://github.com/tpope/vim-fugitive/issues/214
