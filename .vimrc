@@ -352,7 +352,7 @@ highlight GitGutterChange ctermfg=3
 highlight GitGutterDelete ctermfg=1
 highlight GitGutterChangeDelete ctermfg=4
 
-let g:gitgutter_highlight_lines = 1
+let g:gitgutter_highlight_lines = 0
 let g:gitgutter_highlight_liners = 1
 
 " close NERDTree after a file is opened
