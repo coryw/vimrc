@@ -309,7 +309,7 @@ nmap <silent> <leader>a :bp<cr>
 " nmap <S-Tab> :tabp<cr>
 nmap <silent> <leader>a :bp<cr>
 nmap <silent> <leader>l :set relativenumber!<cr>cr " Toggle line number setting
-nnoremap <silent> <leader>ed :VdebugEval<SPACE>
+nnoremap <leadeR>ed :VdebugEval<SPACE>
 nnoremap <silent> <leader>gs :Gstatus<cr>
 nnoremap <silent> <leader>gd :Gvdiff<cr>
 nnoremap <silent> <leader>gv :Gsdiff<cr>
