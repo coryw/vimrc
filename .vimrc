@@ -48,6 +48,7 @@ Plugin 'junegunn/gv.vim' " Commit browser
     " Use :GV or :GV? in visual mode to show changes to selected lines
 Plugin 'mbbill/undotree' " Undo visualizer
 Plugin 'posva/vim-vue' " Vue syntax highlighting
+Plugin 'neoclide/coc.nvim' " VSCode-style autocomplete
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
@@ -213,6 +214,22 @@ if exists('$TMUX') && !has('nvim')  " Support resizing in tmux
       set ttymouse=xterm2
 endif
 
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-]> <Plug>(coc-snippets-select)
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
 " green/red diffs
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
@@ -284,7 +301,8 @@ nmap <silent> <leader>q :close<cr>
 " nmap <silent> <leader>d :bd<cr>
 nmap <silent> <leader>d :BD<cr>
 nmap <silent> <leader>m :tabe <cr>
-nmap <C-b> :BuffergatorToggle<cr>
+" nmap <C-b> :Buffers<cr>
+nmap <C-b> :CocCommand fzf-preview.Buffers<CR>
 " nmap <C-t> :BuffergatorTabsToggle<cr>
 
 nnoremap <leader>. :CtrlPTag<cr>
@@ -344,6 +362,11 @@ if !empty(glob("~/.vimrc_local"))
     source ~/.vimrc_local
 endif
 
+" neoclide/coc.nvim plugin config
+if !empty(glob("~/.vimrc_coc"))
+    source ~/.vimrc_coc
+endif
+
 " fix Glog not displaying in quickfix window:
 " https://github.com/tpope/vim-fugitive/issues/214
 autocmd QuickFixCmdPost *grep* cwindow
@@ -375,7 +398,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " map fuzzyfinder (CtrlP) plugin
 " nmap <silent> <leader>t :CtrlP<cr>
 nmap <silent> <leader>r :CtrlPBuffer<cr>
-map <C-p> :FZF<CR>
+
+" map <C-p> :FZF<CR>
+" This fuzzy-search only includes git files
+map <C-p> :CocCommand fzf-preview.GitFiles <CR>
+
+map <C-Space> :CocAction<CR>
 
 " The Silver Searcher
 if executable('ag')
@@ -461,7 +489,7 @@ if !exists('g:undotree_WindowLayout')
     let g:undotree_WindowLayout = 2
 endif
 
-" set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 
 " Allow gf (go-to file) command to find vue, js, scss files
