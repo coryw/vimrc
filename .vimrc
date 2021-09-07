@@ -49,6 +49,7 @@ Plugin 'junegunn/gv.vim' " Commit browser
 Plugin 'mbbill/undotree' " Undo visualizer
 Plugin 'posva/vim-vue' " Vue syntax highlighting
 Plugin 'neoclide/coc.nvim' " VSCode-style autocomplete
+Plugin 'cohama/lexima.vim' " Auto-close brackets
 
 " Git Diff signs
 Plugin 'airblade/vim-gitgutter'
